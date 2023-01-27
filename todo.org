@@ -1,0 +1,22 @@
+#+title: Todo
+
+* Resources
+[[https://stackoverflow.com/questions/57611219/when-adding-no-std-to-a-library-are-there-any-disadvantages-or-complicati][rust - When adding `#![no_std]` to a library, are there any disadvantages or complications for the users of that library?]]
+[[https://users.ece.utexas.edu/~valvano/arm/ST7735.c][https://users.ece.utexas.edu/~valvano/arm/ST7735.c]]
+[[http://www.extentofthejam.com/pseudo/][Lou's Pseudo 3d Page]]
+[[https://github.com/yocto-8/yocto-8][yocto-8/yocto-8: A (WIP) PICO-8 cartridge runner for the Raspberry Pi Pico]]
+[[https://www.reddit.com/r/rust/comments/w3bsr1/can_you_run_rust_on_the_new_raspberry_pi_pico_w/][Can you run rust on the new raspberry pi pico w? : rust]]
+[[https://reltech.substack.com/p/getting-started-with-rust-on-a-raspberry][Getting Started with Rust on a Raspberry Pi Pico (Part 1)]]
+[[https://github.com/PLSysSec/zerocost_testing_firefox/blob/647ec5c962a09206de11bf9717e66c51909d10a2/third_party/rust/object/src/lib.rs][zerocost_testing_firefox/lib.rs at 647ec5c962a09206de11bf9717e66c51909d10a2 · PLSysSec/zerocost_testing_firefox]]
+    Lots of conditional compilation for rust shown.
+[[https://docs.rust-embedded.org/cortex-m-quickstart/cortex_m/index.html][cortex_m - Rust]]
+[[https://www.reddit.com/r/rust/comments/mpfnua/writing_no_stdfriendly_libraries/][Writing no_std-friendly libraries? : rust]]
+    Tip about writing tests with std.
+[[https://docs.rs/heapless/latest/heapless/struct.String.html#method.as_bytes][String in heapless - Rust]]
+[[http://blog.timhutt.co.uk/std-embedded-rust/index.html][Using std in embedded Rust]]
+[[https://doc.rust-lang.org/cargo/reference/unstable.html][Unstable Features - The Cargo Book]]
+[[https://github.com/japaric/ufmt][japaric/ufmt: a smaller, faster and panic-free alternative to core::fmt]]
+[[https://www.reddit.com/r/rust/comments/ug2jv7/creating_formatted_strings_with_no_std_on_embedded/][Creating formatted strings with no_std on embedded : rust]]
+[[https://github.com/rust-embedded/awesome-embedded-rust][rust-embedded/awesome-embedded-rust: Curated list of resources for Embedded and Low-level development in the Rust programming language]]
+[[https://github.com/mmastrac/rust-libc-print/blob/master/Cargo.toml][rust-libc-print/Cargo.toml at master · mmastrac/rust-libc-print]]
+how to turn off default features.

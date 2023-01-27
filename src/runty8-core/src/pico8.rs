@@ -1,4 +1,6 @@
+#[cfg(feature = "std")]
 use rand::Rng;
+#[cfg(feature = "std")]
 use std::f32::consts::PI;
 
 use crate::draw_data::DrawData;

@@ -3,6 +3,9 @@ use itertools::Itertools;
 use crate::serialize::Serialize;
 use crate::Color;
 
+// #[cfg(not(feature = "std"))]
+// use alloc::format;
+
 /// A pico8 game's sprite sheet.
 #[derive(Debug, Clone)]
 pub struct SpriteSheet {

@@ -3,14 +3,24 @@ use itertools::Itertools;
 use crate::draw_data::COLORS;
 use crate::map::Map;
 use crate::sprite_sheet::SpriteSheet;
+
+#[cfg(not(feature = "std"))]
+extern crate core as std;
+#[cfg(not(feature = "std"))]
+extern crate alloc;
+#[cfg(not(feature = "std"))]
+use alloc::format;
+
 use std::fmt::Display;
 
+#[cfg(feature = "std")]
 fn write_and_log(file_name: &str, contents: &str) {
     print!("Writing {file_name}... ");
     std::fs::write(file_name, contents).unwrap();
     println!("success.")
 }
 
+#[cfg(feature = "std")]
 pub fn serialize(assets_path: &str, file_name: &str, serializable: &impl Serialize) {
     let file_path = format!("{assets_path}/{file_name}");
 

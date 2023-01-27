@@ -1,6 +1,17 @@
 // #![deny(missing_docs)]
 
 //! Types and functions required to run a Runty8 game.
+#![no_std]
+
+#[cfg(not(feature = "std"))]
+extern crate core as std;
+#[cfg(not(feature = "std"))]
+#[macro_use]
+extern crate alloc;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 mod draw_data;
 mod flags;
@@ -223,7 +234,7 @@ macro_rules! include_assets {
         }
     };
 }
-
+#[cfg(feature = "std")]
 #[doc(hidden)]
 pub use include_dir;
 #[doc(hidden)]
@@ -243,7 +254,11 @@ pub fn create_asset<T: Default>(
             deserialize(contents)
         }
         None => {
-            println!("Couldn't find file for asset: {asset_name}, creating a blank one.");
+
+            #[cfg(feature = "std")]
+            {
+                println!("Couldn't find file for asset: {asset_name}, creating a blank one.");
+            }
             Ok(T::default())
         }
     }
