@@ -33,5 +33,9 @@ name = "standalone-game"
 path = "./standalone-game/main.rs"
 
 [[bin]]
+name = "scratch"
+path = "./scratch/main.rs"
+
+[[bin]]
 name = "editor-assets"
 path = "./editor-assets/main.rs"
