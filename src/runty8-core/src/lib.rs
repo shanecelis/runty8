@@ -258,7 +258,7 @@ macro_rules! load_assets {
 
         (|| {
             let assets_path = concat!(env!("CARGO_MANIFEST_DIR"), "/", $path).to_owned();
-            println!("Loading assets from: {}", assets_path);
+            println!("Loading assets from: {}. {}", assets_path, DIR.path().display());
 
             let map =
                 $crate::create_asset($crate::Map::deserialize, "map", DIR.get_file("map.txt"))?;
