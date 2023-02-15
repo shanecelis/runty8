@@ -2,6 +2,11 @@ use itertools::Itertools;
 
 use crate::serialize::Serialize;
 use crate::Color;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
+use crate::alloc::borrow::ToOwned;
 
 // #[cfg(not(feature = "std"))]
 // use alloc::format;
@@ -12,6 +17,7 @@ pub struct SpriteSheet {
     pub(crate) sprite_sheet: Vec<Color>,
 }
 
+#[cfg(feature = "std")]
 impl SpriteSheet {
     pub fn file_name() -> String {
         "sprite_sheet.txt".to_owned()

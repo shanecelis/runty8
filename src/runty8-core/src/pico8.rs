@@ -1,7 +1,8 @@
 #[cfg(feature = "std")]
 use rand::Rng;
-#[cfg(feature = "std")]
-use std::f32::consts::PI;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+use core::f32::consts::PI;
 
 use crate::draw_data::DrawData;
 use crate::sprite_sheet::Sprite;
@@ -210,14 +211,21 @@ impl Pico8 {
 // Top level functions that pico8 provides that don't modify the global state.
 // cos, sin, etc.
 
+#[cfg(feature = "std")]
 /// Pico8's [`sin`](<https://pico-8.fandom.com/wiki/Sin>) function.
 pub fn sin(f: f32) -> f32 {
     (-f * 2.0 * PI).sin()
 }
 
+#[cfg(not(feature = "std"))]
+pub fn sin(f: f32) -> f32 {
+    math::sinf(-f * 2.0 * PI)
+}
+
 /// Pico8's [`rnd`](<https://pico-8.fandom.com/wiki/Rnd>) function.
 pub fn rnd(limit: f32) -> f32 {
-    rand::thread_rng().gen_range(0.0..limit)
+    7.0
+    //rand::thread_rng().gen_range(0.0..limit)
 }
 
 /// Pico8's [`mid`](<https://pico-8.fandom.com/wiki/Mid>) function.
@@ -228,9 +236,14 @@ pub fn mid(first: f32, second: f32, third: f32) -> f32 {
     slice[1]
 }
 
+#[cfg(feature = "std")]
 /// Pico8's [`flr`](<https://pico-8.fandom.com/wiki/Flr>) function.
 pub fn flr(num: f32) -> i32 {
     num.floor() as i32
+}
+#[cfg(not(feature = "std"))]
+pub fn flr(num: f32) -> i32 {
+    math::floorf(num) as i32
 }
 
 #[cfg(test)]

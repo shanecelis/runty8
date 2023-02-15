@@ -10,8 +10,6 @@ extern crate core as std;
 extern crate alloc;
 #[cfg(not(feature = "std"))]
 use alloc::string::String;
-#[cfg(not(feature = "std"))]
-use alloc::vec::Vec;
 
 mod draw_data;
 mod flags;
@@ -241,6 +239,7 @@ pub use include_dir;
 pub use paste::paste;
 /// Embed game assets in your binary
 
+#[cfg(feature = "std")]
 pub fn create_asset<T: Default>(
     deserialize: fn(&str) -> Result<T, String>,
     asset_name: &str,
@@ -254,11 +253,7 @@ pub fn create_asset<T: Default>(
             deserialize(contents)
         }
         None => {
-
-            #[cfg(feature = "std")]
-            {
-                println!("Couldn't find file for asset: {asset_name}, creating a blank one.");
-            }
+            println!("Couldn't find file for asset: {asset_name}, creating a blank one.");
             Ok(T::default())
         }
     }

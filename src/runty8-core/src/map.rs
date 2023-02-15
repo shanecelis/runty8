@@ -1,7 +1,13 @@
 use crate::serialize::Serialize;
-
+use crate::alloc::string::ToString;
+use display_utils::join;
 use super::sprite_sheet::Sprite;
+#[cfg(feature = "std")]
 use itertools::Itertools;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 type SpriteId = u8;
 
@@ -12,6 +18,7 @@ pub struct Map {
     pub(crate) map: [SpriteId; Self::MAP_SIZE],
 }
 
+#[cfg(feature = "std")]
 impl Map {
     pub fn file_name() -> String {
         "map.txt".to_owned()
@@ -85,12 +92,11 @@ impl Map {
 impl Serialize for Map {
     // TODO: Make sure this works
     fn serialize(&self) -> String {
-        self.map
-            .iter()
+        join(self.map
             .chunks(Map::WIDTH_SPRITES)
             .into_iter()
-            .map(|chunk| chunk.map(|n| format!("{n:0>2X}")).join(" "))
-            .join("\n")
+            .map(|chunk| join(chunk.iter().map(|n| format!("{n:0>2X}")), " "))
+            , "\n").to_string()
     }
 }
 

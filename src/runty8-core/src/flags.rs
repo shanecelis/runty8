@@ -1,9 +1,17 @@
 use std::fmt::Display;
 
+#[cfg(feature = "std")]
 use itertools::Itertools;
 
 use crate::serialize::Serialize;
 use crate::sprite_sheet::SpriteSheet;
+use display_utils::join;
+use crate::alloc::string::ToString;
+
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 /// A pico8 game's flags.
 #[derive(Debug, Clone)]
@@ -11,6 +19,7 @@ pub struct Flags {
     flags: [u8; SpriteSheet::SPRITE_COUNT],
 }
 
+#[cfg(feature = "std")]
 impl Flags {
     pub fn file_name() -> String {
         "sprite_flags.txt".to_owned()
@@ -19,13 +28,16 @@ impl Flags {
 
 impl Display for Flags {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str(
-            &self
+        let strings = &self
                 .flags
                 .chunks(16)
-                .map(|chunk| chunk.iter().map(|c| format!("{c:0>8b}")).join(" "))
-                .join("\n"),
-        )
+                .map(|chunk| join(chunk.iter().map(|c| format!("{c:0>8b}")), " ").to_string());
+        // HACK: Is this clone necessary?
+        for string in strings.clone() {
+            f.write_str(&string)?;
+            f.write_str("\n")?;
+        }
+        Ok(())
     }
 }
 
@@ -110,10 +122,10 @@ impl Flags {
 
 impl Serialize for Flags {
     fn serialize(&self) -> String {
-        self.flags
+        join(self.flags
             .iter()
-            .map(|flag| format!("{flag:0>8b}"))
-            .join("\n")
+            .map(|flag| format!("{flag:0>8b}")),
+            "\n").to_string()
     }
 }
 

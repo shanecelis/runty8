@@ -1,8 +1,11 @@
+#[cfg(feature = "std")]
 use itertools::Itertools;
 
 use crate::draw_data::COLORS;
 use crate::map::Map;
 use crate::sprite_sheet::SpriteSheet;
+use display_utils::join;
+use crate::alloc::string::ToString;
 
 #[cfg(not(feature = "std"))]
 extern crate core as std;
@@ -10,6 +13,10 @@ extern crate core as std;
 extern crate alloc;
 #[cfg(not(feature = "std"))]
 use alloc::format;
+#[cfg(not(feature = "std"))]
+use alloc::string::String;
+#[cfg(not(feature = "std"))]
+use alloc::vec::Vec;
 
 use std::fmt::Display;
 
@@ -81,7 +88,7 @@ impl Ppm {
         let height = 4 * 16 * 8;
         let mut data = vec![Color { r: 0, g: 0, b: 0 }; width * height];
 
-        for (y, row) in map.map.iter().chunks(128).into_iter().enumerate() {
+        for (y, row) in map.map.chunks(128).into_iter().enumerate() {
             for (x, sprite_id) in row.into_iter().copied().enumerate() {
                 let real_x = x * 8;
                 let real_y = y * 8;
@@ -119,8 +126,6 @@ impl Ppm {
 
         #[allow(clippy::never_loop)]
         for (sprite_index, sprite) in sprite_sheet
-            .iter()
-            .copied()
             .chunks(SPRITE_SIZE)
             .into_iter()
             .enumerate()
@@ -128,11 +133,11 @@ impl Ppm {
             let base_x = SPRITE_WIDTH * (sprite_index % SpriteSheet::SPRITES_PER_ROW);
             let base_y = SPRITE_WIDTH * (sprite_index / SpriteSheet::SPRITES_PER_ROW);
 
-            for (pixel_index, c) in sprite.enumerate() {
+            for (pixel_index, c) in sprite.iter().enumerate() {
                 let x = base_x + pixel_index % SPRITE_WIDTH;
                 let y = base_y + pixel_index / SPRITE_WIDTH;
 
-                let color = Color::from_pico8(c);
+                let color = Color::from_pico8(*c);
                 data[(x + y * 128)] = color;
             }
         }
@@ -149,12 +154,12 @@ impl Serialize for Ppm {
     /// Plain PPM format (P3)
     fn serialize(&self) -> String {
         let header = format!("P3\n{} {}\n255", self.width, self.height);
-        let body = self
+        let body = join(self
             .data
             .iter()
             .copied()
             .map(|component| format!(" {component} "))
-            .join("");
+            , "").to_string();
 
         format!("{header}\n{body}")
     }
