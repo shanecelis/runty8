@@ -235,8 +235,8 @@ macro_rules! include_assets {
 #[cfg(feature = "std")]
 #[doc(hidden)]
 pub use include_dir;
-// #[doc(hidden)]
-// pub use paste::paste;
+#[doc(hidden)]
+pub use paste::paste;
 /// Embed game assets in your binary
 
 #[cfg(feature = "std")]
