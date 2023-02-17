@@ -1,6 +1,6 @@
 use crate::serialize::Serialize;
 #[cfg(not(feature = "std"))]
-use core::alloc::string::ToString;
+use crate::alloc::string::ToString;
 use display_utils::join;
 use super::sprite_sheet::Sprite;
 #[cfg(not(feature = "std"))]
