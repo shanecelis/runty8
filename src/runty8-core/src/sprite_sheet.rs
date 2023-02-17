@@ -6,6 +6,7 @@ use crate::Color;
 use alloc::string::String;
 #[cfg(not(feature = "std"))]
 use alloc::vec::Vec;
+#[cfg(not(feature = "std"))]
 use crate::alloc::borrow::ToOwned;
 
 // #[cfg(not(feature = "std"))]

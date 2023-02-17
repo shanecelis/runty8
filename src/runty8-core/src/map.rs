@@ -1,9 +1,8 @@
 use crate::serialize::Serialize;
-use crate::alloc::string::ToString;
+#[cfg(not(feature = "std"))]
+use core::alloc::string::ToString;
 use display_utils::join;
 use super::sprite_sheet::Sprite;
-#[cfg(feature = "std")]
-use itertools::Itertools;
 #[cfg(not(feature = "std"))]
 use alloc::string::String;
 #[cfg(not(feature = "std"))]

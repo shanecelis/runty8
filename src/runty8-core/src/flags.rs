@@ -1,12 +1,10 @@
 #[cfg(feature = "std")]
 use std::fmt::Display;
 
-#[cfg(feature = "std")]
-use itertools::Itertools;
-
 use crate::serialize::Serialize;
 use crate::sprite_sheet::SpriteSheet;
 use display_utils::join;
+#[cfg(not(feature = "std"))]
 use crate::alloc::string::ToString;
 
 #[cfg(not(feature = "std"))]

@@ -1,10 +1,10 @@
-#[cfg(feature = "std")]
-use itertools::Itertools;
 
 use crate::draw_data::COLORS;
 use crate::map::Map;
 use crate::sprite_sheet::SpriteSheet;
 use display_utils::join;
+
+#[cfg(not(feature = "std"))]
 use crate::alloc::string::ToString;
 
 #[cfg(not(feature = "std"))]
