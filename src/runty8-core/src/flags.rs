@@ -1,3 +1,4 @@
+#[cfg(feature = "std")]
 use std::fmt::Display;
 
 #[cfg(feature = "std")]
@@ -12,6 +13,8 @@ use crate::alloc::string::ToString;
 use alloc::string::String;
 #[cfg(not(feature = "std"))]
 use alloc::vec::Vec;
+#[cfg(not(feature = "std"))]
+use core::fmt::Display;
 
 /// A pico8 game's flags.
 #[derive(Debug, Clone)]
@@ -28,16 +31,11 @@ impl Flags {
 
 impl Display for Flags {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let strings = &self
+        let strings = self
                 .flags
                 .chunks(16)
                 .map(|chunk| join(chunk.iter().map(|c| format!("{c:0>8b}")), " ").to_string());
-        // HACK: Is this clone necessary?
-        for string in strings.clone() {
-            f.write_str(&string)?;
-            f.write_str("\n")?;
-        }
-        Ok(())
+        f.write_str(&join(strings, "\n").to_string())
     }
 }
 

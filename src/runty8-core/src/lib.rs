@@ -1,7 +1,7 @@
 // #![deny(missing_docs)]
 
 //! Types and functions required to run a Runty8 game.
-#![no_std]
+#![cfg_attr(not(feature = "std"), no_std)]
 
 #[cfg(not(feature = "std"))]
 extern crate core as std;
@@ -235,8 +235,8 @@ macro_rules! include_assets {
 #[cfg(feature = "std")]
 #[doc(hidden)]
 pub use include_dir;
-#[doc(hidden)]
-pub use paste::paste;
+// #[doc(hidden)]
+// pub use paste::paste;
 /// Embed game assets in your binary
 
 #[cfg(feature = "std")]

@@ -222,10 +222,15 @@ pub fn sin(f: f32) -> f32 {
     math::sinf(-f * 2.0 * PI)
 }
 
+#[cfg(feature = "std")]
 /// Pico8's [`rnd`](<https://pico-8.fandom.com/wiki/Rnd>) function.
 pub fn rnd(limit: f32) -> f32 {
+    rand::thread_rng().gen_range(0.0..limit)
+}
+
+#[cfg(not(feature = "std"))]
+pub fn rnd(_limit: f32) -> f32 {
     7.0
-    //rand::thread_rng().gen_range(0.0..limit)
 }
 
 /// Pico8's [`mid`](<https://pico-8.fandom.com/wiki/Mid>) function.
