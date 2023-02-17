@@ -1,6 +1,10 @@
 #[cfg(feature = "std")]
 use rand::Rng;
 #[cfg(not(feature = "std"))]
+use rand::{Rng, SeedableRng};
+#[cfg(not(feature = "std"))]
+use rand::rngs::SmallRng;
+#[cfg(not(feature = "std"))]
 use alloc::string::String;
 use core::f32::consts::PI;
 
@@ -229,8 +233,13 @@ pub fn rnd(limit: f32) -> f32 {
 }
 
 #[cfg(not(feature = "std"))]
-pub fn rnd(_limit: f32) -> f32 {
-    7.0
+static mut RNG : Option<SmallRng> = None;
+#[cfg(not(feature = "std"))]
+pub fn rnd(limit: f32) -> f32 {
+    unsafe {
+        let rng = RNG.get_or_insert_with(|| SmallRng::seed_from_u64(0));
+        rng.gen_range(0.0..limit)
+    }
 }
 
 /// Pico8's [`mid`](<https://pico-8.fandom.com/wiki/Mid>) function.
