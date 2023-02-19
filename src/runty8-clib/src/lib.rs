@@ -2,12 +2,12 @@
 #![feature(alloc_error_handler)]
 
 extern crate alloc;
-use alloc::vec::Vec;
+// use alloc::vec::Vec;
 use core::alloc::Layout;
 use core::panic::PanicInfo;
 // use cortex_m_rt::entry;
 use embedded_alloc::Heap;
-// use cty::{c_void};
+use core::ffi::{c_int, c_uint};
 
 #[global_allocator]
 static HEAP: Heap = Heap::empty();
@@ -29,12 +29,14 @@ pub extern "C" fn init() {
     // loop { /* .. */ }
 }
 
+#[no_mangle]
 pub extern "C" fn getPixel(x : c_int, y : c_int) -> c_uint {
     0
 }
 
+#[no_mangle]
 #[repr(C)]
-enum Button {
+pub enum Button {
     W = 0b00000001,
     S = 0b00000010,
     A = 0b00000100,
@@ -43,6 +45,10 @@ enum Button {
     K = 0b00100000,
     J = 0b01000000,
     L = 0b10000000
+}
+
+#[no_mangle]
+pub extern "C" fn setInput(buttons : u8) {
 }
 
 
