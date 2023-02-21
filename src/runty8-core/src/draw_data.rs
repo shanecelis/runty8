@@ -64,6 +64,17 @@ impl DrawData {
         }
     }
 
+
+    pub fn get_pixel(&self, index: usize) -> u32 {
+        // https://pico-8.fandom.com/wiki/Pal
+        #[allow(clippy::identity_op)]
+        {
+            (self.buffer[NUM_COMPONENTS * index + 0] as u32)<< 16 |
+            (self.buffer[NUM_COMPONENTS * index + 1] as u32)<<  8 |
+            (self.buffer[NUM_COMPONENTS * index + 2] as u32)<<  0
+        }
+    }
+
     pub fn buffer(&self) -> &Buffer {
         &self.buffer
     }
@@ -87,7 +98,7 @@ impl DrawData {
     }
 
     /// Returns the linear index of the pixel with (x, y) coordinates in the screen
-    fn index(&self, x: i32, y: i32) -> Option<usize> {
+    pub fn index(&self, x: i32, y: i32) -> Option<usize> {
         let x_in_bounds = 0 <= x && x < WIDTH as i32;
         let y_in_bounds = 0 <= y && y < WIDTH as i32;
 
