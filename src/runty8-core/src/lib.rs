@@ -63,7 +63,7 @@ pub enum Button {
 
 /// Game assets: sprite sheet, map, flags.
 // TODO: Rename to assets?
-#[derive(Debug)]
+#[derive(Debug, Default)]
 pub struct Resources {
     pub assets_path: String,
     pub sprite_sheet: SpriteSheet,
@@ -268,7 +268,7 @@ macro_rules! load_assets {
 
         (|| {
             let assets_path = concat!(env!("CARGO_MANIFEST_DIR"), "/", $path).to_owned();
-            println!("Loading assets from: {}", assets_path);
+            // println!("Loading assets from: {}", assets_path);
 
             let map =
                 $crate::create_asset($crate::Map::deserialize, "map", DIR.get_file("map.txt"))?;
