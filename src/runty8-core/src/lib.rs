@@ -65,7 +65,7 @@ pub enum Button {
 // TODO: Rename to assets?
 #[derive(Debug, Default)]
 pub struct Resources {
-    pub assets_path: String,
+    pub assets_path: &'static str,
     pub sprite_sheet: SpriteSheet,
     pub sprite_flags: Flags,
     pub map: Map,
@@ -213,81 +213,24 @@ pub enum Event {
     WindowClosed,
 }
 
-#[doc(hidden)]
-#[macro_export]
-macro_rules! include_dir_hack {
-    (#[doc = $arg:tt]) => {{
-        use $crate::include_dir;
-
-        include_dir::include_dir!($arg)
-    }};
-}
-
-#[doc(hidden)]
-#[macro_export]
-macro_rules! include_assets {
-    ($arg:tt) => {
-        $crate::paste! {
-            $crate::include_dir_hack!(#[doc = "$CARGO_MANIFEST_DIR/" $arg ])
-        }
-    };
-}
-#[cfg(feature = "std")]
-#[doc(hidden)]
-pub use include_dir;
-#[doc(hidden)]
-pub use paste::paste;
-/// Embed game assets in your binary
-
-#[cfg(feature = "std")]
-pub fn create_asset<T: Default>(
-    deserialize: fn(&str) -> Result<T, String>,
-    asset_name: &str,
-    file: Option<&include_dir::File>,
-) -> Result<T, String> {
-    match file {
-        Some(file) => {
-            let contents = file
-                .contents_utf8()
-                .ok_or_else(|| "File contents were not utf8".to_owned())?;
-            deserialize(contents)
-        }
-        None => {
-            println!("Couldn't find file for asset: {asset_name}, creating a blank one.");
-            Ok(T::default())
-        }
-    }
-}
-
 /// Embed game assets in your binary (that is, loading them at compile time).
 #[macro_export]
 macro_rules! load_assets {
     ($path:tt) => {{
-        use $crate::include_dir;
-        static DIR: include_dir::Dir = $crate::include_assets!($path);
-
         (|| {
-            let assets_path = concat!(env!("CARGO_MANIFEST_DIR"), "/", $path).to_owned();
-            // println!("Loading assets from: {}", assets_path);
+            let map = $crate::Map::deserialize(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/map.txt")))
+                .expect("no map");
 
-            let map =
-                $crate::create_asset($crate::Map::deserialize, "map", DIR.get_file("map.txt"))?;
-            let sprite_flags = $crate::create_asset(
-                $crate::Flags::deserialize,
-                "sprite flags",
-                DIR.get_file("sprite_flags.txt"),
-            )?;
-            let sprite_sheet = $crate::create_asset(
-                $crate::SpriteSheet::deserialize,
-                "sprite_sheet",
-                DIR.get_file("sprite_sheet.txt"),
-            )?;
+            let sprite_flags = $crate::Flags::deserialize(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/sprite_flags.txt")))
+                .expect("no flags");
 
-            Ok::<$crate::Resources, String>($crate::Resources {
+            let sprite_sheet = $crate::SpriteSheet::deserialize(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/sprite_sheet.txt")))
+                .expect("no sprite sheet");
+            Ok::<$crate::Resources, &str>($crate::Resources {
                 map,
                 sprite_flags,
                 sprite_sheet,
-                assets_path,
+                assets_path: $path
             })
         })()
     }};
