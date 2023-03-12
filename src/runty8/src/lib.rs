@@ -3,9 +3,7 @@
 //! Entrypoints for all games using runty8.
 
 #[doc(inline)]
-pub use runty8_core::{flr, load_assets, mid, rnd, sin, App, Button, Pico8};
-
-use runty8_core::Resources;
+pub use runty8_core::{flr, load_assets, mid, rnd, sin, App, Button, Pico8, Resources};
 
 #[cfg(not(target_arch = "wasm32"))]
 #[doc(inline)]
