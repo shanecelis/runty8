@@ -8,14 +8,14 @@ use alloc::string::String;
 use alloc::vec::Vec;
 #[cfg(not(feature = "std"))]
 use crate::alloc::borrow::ToOwned;
-
 // #[cfg(not(feature = "std"))]
 // use alloc::format;
-
+#[cfg(not(feature = "std"))]
+use crate::alloc::string::ToString;
 /// A pico8 game's sprite sheet.
 #[derive(Debug, Clone)]
 pub struct SpriteSheet {
-    pub(crate) sprite_sheet: Vec<Color>,
+    pub(crate) sprite_sheet: [Color; SpriteSheet::COLOR_COUNT],
 }
 
 #[cfg(feature = "std")]
@@ -33,25 +33,29 @@ impl SpriteSheet {
     /// The other 128 share memory with the map,
     /// and will override its data if used
     pub const SPRITE_COUNT: usize = 256;
-
+    const COLOR_COUNT : usize = Self::SPRITE_COUNT * Sprite::WIDTH * Sprite::HEIGHT;
     pub fn new() -> Self {
         Self {
-            sprite_sheet: vec![0; Self::SPRITE_COUNT * Sprite::WIDTH * Sprite::HEIGHT],
+            sprite_sheet: [0; Self::COLOR_COUNT],
         }
     }
 
-    fn with_vec(sprite_sheet: Vec<Color>) -> Result<Self, String> {
-        const REQUIRED_BYTES: usize = SpriteSheet::SPRITE_COUNT * Sprite::WIDTH * Sprite::HEIGHT;
+    // fn with_vec(sprite_sheet: Vec<Color>) -> Result<Self, String> {
+    //     const REQUIRED_BYTES: usize = SpriteSheet::SPRITE_COUNT * Sprite::WIDTH * Sprite::HEIGHT;
 
-        if sprite_sheet.len() != REQUIRED_BYTES {
-            Err(format!(
-                "[SpriteSheet] Needed {} bytes, got {}",
-                REQUIRED_BYTES,
-                sprite_sheet.len()
-            ))
-        } else {
-            Ok(Self { sprite_sheet })
-        }
+    //     if sprite_sheet.len() != REQUIRED_BYTES {
+    //         Err(format!(
+    //             "[SpriteSheet] Needed {} bytes, got {}",
+    //             REQUIRED_BYTES,
+    //             sprite_sheet.len()
+    //         ))
+    //     } else {
+    //         Ok(Self { sprite_sheet })
+    //     }
+    // }
+
+    fn with_array(sprite_sheet: [Color; Self::COLOR_COUNT]) -> Self {
+       Self { sprite_sheet }
     }
 
     /// Sets the pixel at coordinate (x,y) in the spritesheet to a specified color
@@ -83,16 +87,24 @@ impl SpriteSheet {
         sprite * Sprite::WIDTH * Sprite::HEIGHT
     }
 
-    pub fn deserialize(str: &str) -> Result<Self, String> {
-        let sprite_sheet = str
+    pub fn deserialize(str: &str) -> Result<Self, &'static str> {
+        let mut sprite_sheet = [0u8; Self::COLOR_COUNT];
+        let mut last = 0;
+        for (i, x) in str
             .as_bytes()
             .iter()
             .copied()
             .filter_map(|c| (c as char).to_digit(16))
-            .map(|c| c as u8)
-            .collect();
+            .enumerate() {
+            sprite_sheet[i] = x as u8;
+            last = i;
+        }
+        if last == sprite_sheet.len() - 1 {
+            Ok(Self::with_array(sprite_sheet))
+        } else {
+            Err("Different size than expected")
+        }
 
-        Self::with_vec(sprite_sheet)
     }
 }
 
