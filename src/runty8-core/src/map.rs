@@ -76,13 +76,14 @@ impl Map {
 
 impl Map {
     // TODO: Make sure this works
-    pub fn deserialize(str: &str) -> Result<Self, String> {
+    pub fn deserialize(str: &str) -> Result<Self, &'static str> {
         let map: [SpriteId; Self::MAP_SIZE] = str
             .split_ascii_whitespace()
             .map(|num| u8::from_str_radix(num, 16).unwrap())
             .collect::<Vec<_>>()
             .try_into()
-            .map_err(|error: Vec<u8>| format!("Error deserializing map {}", error.len()))?;
+            // .map_err(|error: Vec<u8>| format!("Error deserializing map {}", error.len()))?;
+            .map_err(|error: Vec<u8>| "Error deserializing map {}")?;
 
         Ok(Self { map })
     }

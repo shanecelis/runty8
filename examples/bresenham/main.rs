@@ -1,9 +1,10 @@
 use runty8::{App, Button, Pico8};
+use runty8_core::Resources;
 
 fn main() {
-    let resources = runty8::load_assets!("bresenham").unwrap();
+    // let resources = runty8::load_assets!("bresenham").unwrap();
 
-    runty8::debug_run::<MyThing>(resources).unwrap();
+    runty8::debug_run::<MyThing>(Resources::default()).unwrap();
 }
 
 struct MyThing {

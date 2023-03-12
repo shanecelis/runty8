@@ -1,7 +1,7 @@
-use runty8::{App, Button, Pico8};
+use runty8::{App, Button, Pico8, Resources};
 
 fn main() {
-    let resources = runty8::load_assets!("stress-lines").unwrap();
+    let resources = Resources::default();
 
     runty8::debug_run::<StressLines>(resources).unwrap();
 }

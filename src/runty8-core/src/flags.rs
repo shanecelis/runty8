@@ -93,23 +93,24 @@ impl Flags {
         res != 0
     }
 
-    pub fn deserialize(file_contents: &str) -> Result<Self, String> {
+    pub fn deserialize(file_contents: &str) -> Result<Self, &'static str> {
         // let flags_vec: Result<Vec<u8>, String> = file_contents
-        let flags_vec: Result<Vec<u8>, String> = file_contents
+        let flags_vec: Result<Vec<u8>, &'static str> = file_contents
             .lines()
             .map(
                 |line| u8::from_str_radix(line, 2), //  line.parse::<u8>().map_err(|e| format!("{:?}", e))
             )
             .collect::<Result<Vec<u8>, _>>()
-            .map_err(|err| format!("{err:?}"));
+            .map_err(|err| "bad element");//format!("{err:?}"));
 
         let flags_array: [u8; SpriteSheet::SPRITE_COUNT] =
             flags_vec?.try_into().map_err(|v: Vec<u8>| {
-                format!(
-                    "Incorrect number of elements, needed: {}, got: {}",
-                    SpriteSheet::SPRITE_COUNT,
-                    v.len()
-                )
+                "Incorrect number of elements"
+                // format!(
+                //     "Incorrect number of elements, needed: {}, got: {}",
+                //     SpriteSheet::SPRITE_COUNT,
+                //     v.len()
+                // )
             })?;
 
         Ok(Self::with_flags(flags_array))
