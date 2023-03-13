@@ -61,6 +61,10 @@ impl Color {
 
         Self { r, g, b }
     }
+
+    // fn new(r: u8, g: u8, b: u8) -> Self {
+    //     Self { r, g, b }
+    // }
 }
 
 impl Display for Color {
@@ -138,7 +142,7 @@ impl Ppm {
                 let y = base_y + pixel_index / SPRITE_WIDTH;
 
                 let color = Color::from_pico8(*c);
-                data[(x + y * 128)] = color;
+                data[x + y * 128] = color;
             }
         }
 
