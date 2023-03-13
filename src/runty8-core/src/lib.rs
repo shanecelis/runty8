@@ -8,8 +8,6 @@ extern crate core as std;
 #[cfg(not(feature = "std"))]
 #[macro_use]
 extern crate alloc;
-#[cfg(not(feature = "std"))]
-use alloc::string::String;
 
 mod draw_data;
 mod flags;
@@ -226,6 +224,25 @@ macro_rules! load_assets {
 
             let sprite_sheet = $crate::SpriteSheet::deserialize(include_str!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/sprite_sheet.txt")))
                 .expect("no sprite sheet");
+            Ok::<$crate::Resources, &str>($crate::Resources {
+                map,
+                sprite_flags,
+                sprite_sheet,
+                assets_path: $path
+            })
+        })()
+    }};
+}
+
+#[macro_export]
+macro_rules! load_assets_bin {
+    ($path:tt) => {{
+        (|| {
+            let map = $crate::Map::from_bytes(include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/map.bin")).clone());
+
+            let sprite_flags = $crate::Flags::from_bytes(include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/sprite_flags.bin")).clone());
+
+            let sprite_sheet = $crate::SpriteSheet::from_bytes(include_bytes!(concat!(env!("CARGO_MANIFEST_DIR"), "/", $path, "/sprite_sheet.bin")).clone());
             Ok::<$crate::Resources, &str>($crate::Resources {
                 map,
                 sprite_flags,

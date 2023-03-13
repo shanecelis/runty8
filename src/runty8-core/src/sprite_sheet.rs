@@ -12,6 +12,7 @@ use crate::alloc::borrow::ToOwned;
 // use alloc::format;
 #[cfg(not(feature = "std"))]
 use crate::alloc::string::ToString;
+
 /// A pico8 game's sprite sheet.
 #[derive(Debug, Clone)]
 pub struct SpriteSheet {
@@ -54,7 +55,7 @@ impl SpriteSheet {
     //     }
     // }
 
-    fn with_array(sprite_sheet: [Color; Self::COLOR_COUNT]) -> Self {
+    pub fn from_bytes(sprite_sheet: [Color; Self::COLOR_COUNT]) -> Self {
        Self { sprite_sheet }
     }
 
@@ -100,11 +101,15 @@ impl SpriteSheet {
             last = i;
         }
         if last == sprite_sheet.len() - 1 {
-            Ok(Self::with_array(sprite_sheet))
+            Ok(Self::from_bytes(sprite_sheet))
         } else {
             Err("Different size than expected")
         }
 
+    }
+
+    pub fn serialize_bytes(&self) -> &[u8] {
+        &self.sprite_sheet
     }
 }
 

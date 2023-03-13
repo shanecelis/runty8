@@ -44,6 +44,10 @@ impl Flags {
         Self { flags }
     }
 
+    pub fn from_bytes(flags : [u8; SpriteSheet::SPRITE_COUNT]) -> Self {
+        Self { flags }
+    }
+
     pub(crate) fn with_flags(flags: [u8; SpriteSheet::SPRITE_COUNT]) -> Self {
         Self { flags }
     }
@@ -101,7 +105,7 @@ impl Flags {
                 |line| u8::from_str_radix(line, 2), //  line.parse::<u8>().map_err(|e| format!("{:?}", e))
             )
             .collect::<Result<Vec<u8>, _>>()
-            .map_err(|err| "bad element");//format!("{err:?}"));
+            .map_err(|_err| "bad element");//format!("{err:?}"));
 
         let flags_array: [u8; SpriteSheet::SPRITE_COUNT] =
             flags_vec?.try_into().map_err(|v: Vec<u8>| {
@@ -114,6 +118,10 @@ impl Flags {
             })?;
 
         Ok(Self::with_flags(flags_array))
+    }
+
+    pub fn serialize_bytes(&self) -> &[u8] {
+        &self.flags
     }
 }
 

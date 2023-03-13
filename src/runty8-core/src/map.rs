@@ -37,11 +37,16 @@ impl Map {
     // TODO: Make pub(crate)
     pub fn new() -> Self {
         let mut map = [0; Self::MAP_SIZE];
-
         map[0] = 1;
         map[1] = 1;
         map[2] = 1;
+        Map { map }
+    }
 
+    pub fn from_bytes(mut map : [SpriteId; Self::MAP_SIZE]) -> Self {
+        map[0] = 1;
+        // map[1] = 1;
+        // map[2] = 1;
         Map { map }
     }
 
@@ -71,6 +76,12 @@ impl Map {
         } else {
             None
         }
+    }
+
+    #[cfg(feature = "std")]
+    pub fn serialize_bytes(&self) -> &[u8] {
+        &self.map
+        // std::fs::write(path, self.map)
     }
 }
 
