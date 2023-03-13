@@ -2,12 +2,12 @@ use crate::{Button, InputEvent, Key, KeyState, KeyboardEvent, MouseButton, Mouse
 
 #[derive(Debug)]
 pub struct Input {
-    pub(crate) left: Option<bool>,
-    pub(crate) right: Option<bool>,
-    pub(crate) up: Option<bool>,
-    pub(crate) down: Option<bool>,
-    pub(crate) x: Option<bool>,
-    pub(crate) c: Option<bool>,
+    pub left: Option<bool>,
+    pub right: Option<bool>,
+    pub up: Option<bool>,
+    pub down: Option<bool>,
+    pub x: Option<bool>,
+    pub c: Option<bool>,
     pub mouse: Option<bool>,
     pub mouse_x: i32,
     pub mouse_y: i32,
