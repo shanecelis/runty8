@@ -44,7 +44,8 @@ impl Map {
     }
 
     pub fn from_bytes(mut map : [SpriteId; Self::MAP_SIZE]) -> Self {
-        map[0] = 1;
+        // BUG: For some reason it won't work on sprig if we don't do this.
+        map[0] = 10;
         // map[1] = 1;
         // map[2] = 1;
         Map { map }
