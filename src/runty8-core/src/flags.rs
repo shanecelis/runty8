@@ -108,7 +108,7 @@ impl Flags {
             .map_err(|_err| "bad element");//format!("{err:?}"));
 
         let flags_array: [u8; SpriteSheet::SPRITE_COUNT] =
-            flags_vec?.try_into().map_err(|v: Vec<u8>| {
+            flags_vec?.try_into().map_err(|_v: Vec<u8>| {
                 "Incorrect number of elements"
                 // format!(
                 //     "Incorrect number of elements, needed: {}, got: {}",

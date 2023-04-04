@@ -69,6 +69,17 @@ pub struct Resources {
     pub map: Map,
 }
 
+impl Resources {
+    pub fn new(path: &'static str)  -> Self {
+        Resources {
+            assets_path: path,
+            sprite_sheet: SpriteSheet::new(),
+                sprite_flags: Flags::new(),
+            map: Map::new()
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 /// Key state: up or down.
 pub enum KeyState {

@@ -11,7 +11,8 @@ std = ["rand/default"]
 [dependencies]
 display_utils = { version="0.4.0" }
 itertools = { version = "*", default-features = false }
-math = { git = "https://github.com/nagisa/math.rs" }
+# math = { git = "https://github.com/nagisa/math.rs" }
+micromath = "2.0.0"
 rand = { version = "0.8.5", default-features = false, features = [ "small_rng" ] }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]

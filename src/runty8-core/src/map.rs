@@ -95,7 +95,7 @@ impl Map {
             .collect::<Vec<_>>()
             .try_into()
             // .map_err(|error: Vec<u8>| format!("Error deserializing map {}", error.len()))?;
-            .map_err(|error: Vec<u8>| "Error deserializing map {}")?;
+            .map_err(|_error: Vec<u8>| "Error deserializing map {}")?;
 
         Ok(Self { map })
     }

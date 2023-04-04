@@ -10,8 +10,8 @@ use alloc::vec::Vec;
 use crate::alloc::borrow::ToOwned;
 // #[cfg(not(feature = "std"))]
 // use alloc::format;
-#[cfg(not(feature = "std"))]
-use crate::alloc::string::ToString;
+// #[cfg(not(feature = "std"))]
+// use crate::alloc::string::ToString;
 
 /// A pico8 game's sprite sheet.
 #[derive(Debug, Clone)]

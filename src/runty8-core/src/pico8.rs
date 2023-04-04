@@ -7,6 +7,7 @@ use rand::rngs::SmallRng;
 #[cfg(not(feature = "std"))]
 use alloc::string::String;
 use core::f32::consts::PI;
+use micromath::F32Ext;
 
 use crate::draw_data::DrawData;
 use crate::sprite_sheet::Sprite;
@@ -223,7 +224,7 @@ pub fn sin(f: f32) -> f32 {
 
 #[cfg(not(feature = "std"))]
 pub fn sin(f: f32) -> f32 {
-    math::sinf(-f * 2.0 * PI)
+    (-f * 2.0 * PI).sin()
 }
 
 #[cfg(feature = "std")]
@@ -250,15 +251,15 @@ pub fn mid(first: f32, second: f32, third: f32) -> f32 {
     slice[1]
 }
 
-#[cfg(feature = "std")]
+// #[cfg(feature = "std")]
 /// Pico8's [`flr`](<https://pico-8.fandom.com/wiki/Flr>) function.
 pub fn flr(num: f32) -> i32 {
     num.floor() as i32
 }
-#[cfg(not(feature = "std"))]
-pub fn flr(num: f32) -> i32 {
-    math::floorf(num) as i32
-}
+// #[cfg(not(feature = "std"))]
+// pub fn flr(num: f32) -> i32 {
+//     math::floorf(num) as i32
+// }
 
 #[cfg(test)]
 mod tests {
